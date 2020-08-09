@@ -1,8 +1,5 @@
-'''Loss Prediction Module in PyTorch.
+# encoding=utf-8
 
-Reference:
-[Yoo et al. 2019] Learning Loss for Active Learning (https://arxiv.org/abs/1905.03677)
-'''
 import torch
 import torch.nn as nn 
 import torch.nn.functional as F 

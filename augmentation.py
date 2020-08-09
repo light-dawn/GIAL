@@ -1,3 +1,5 @@
+# encoding=utf-8
+
 import os
 import cv2
 import albumentations as A
@@ -41,19 +43,18 @@ def data_augmentation(image_path, aug_num):
     return patches
 
 
-def create_patches(unlabeled_dir, patches_root, aug_num=12):
-    print("doing data augmentation ...")
+def create_patches(images_dir, patches_root, aug_num=12):
+    print(">> Start data augmentation.")
     # unlabeled_dir = 'aft_data/unlabeled'
     # patches_root = 'aft_data/patches'
     if not os.path.exists(patches_root):
-        print("create patches root.")
-        # print("create patches root.")
+        print(">> Patches root doesn't exist, creating.")
         os.makedirs(patches_root)
-    for category_dir in os.listdir(unlabeled_dir):
-        for image_dir in tqdm(os.listdir(os.path.join(unlabeled_dir, category_dir))):
+    for category_dir in os.listdir(images_dir):
+        for image_dir in tqdm(os.listdir(os.path.join(images_dir, category_dir))):
             if not os.path.exists(os.path.join(patches_root, image_dir[:-4])):
                 os.makedirs(os.path.join(patches_root, image_dir[:-4]))
-            image_path = os.path.join(unlabeled_dir, category_dir, image_dir)
+            image_path = os.path.join(images_dir, category_dir, image_dir)
             patches = None
             try:
                 patches = data_augmentation(image_path, aug_num)
@@ -63,7 +64,7 @@ def create_patches(unlabeled_dir, patches_root, aug_num=12):
                 patch_name = str(i + 1) + image_dir[-4:]
                 patch_dir = os.path.join(patches_root, image_dir[:-4], patch_name)
                 cv2.imwrite(patch_dir, patches[i][:, :, [2, 1, 0]])
-    print("data augmentation done ... ")
+    print(">> Data augmentation done.")
 
 
 if __name__ == '__main__':

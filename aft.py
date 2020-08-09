@@ -1,13 +1,17 @@
+# encoding=utf-8
+
 import torch.nn.functional as F
 import numpy as np
 from utils import *
 from tqdm import tqdm
 import torch
+from dataset import image_transform
 
 
 def compute_all_probs(model, patch_path, device, idx):
     model['classifier'].eval()
     model['module'].eval()
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     with torch.no_grad():
         all_probs = []
         for candidate in tqdm(np.array(os.listdir(patch_path))[idx]):
@@ -17,7 +21,7 @@ def compute_all_probs(model, patch_path, device, idx):
                 image_tensor = image_transform(image)
                 image_tensor.unsqueeze_(0)
                 image_tensor = image_tensor.to(device)
-                # ÕâÊÇÌØ±ðµÄÄ£ÐÍ£¬µÚ¶þ¸öÊä³öÊÇÌØÕ÷Í¼
+                # ï¿½ï¿½ï¿½ï¿½ï¿½Ø±ï¿½ï¿½Ä£ï¿½Í£ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼
                 output_tensor = model['classifier'](image_tensor)[0]
                 prob = F.softmax(output_tensor, dim=1)
                 candidate_probs.append(prob.cpu().numpy().squeeze())
@@ -29,7 +33,6 @@ def find_dominant_class(ps):
     probs_array = np.array(ps)
     prob_sum = np.sum(probs_array, axis=0)
     index = np.argmax(prob_sum)
-    # ·µ»Ø×î´ó¸ÅÂÊÀà±ðµÄË÷Òý
     return index
 
 

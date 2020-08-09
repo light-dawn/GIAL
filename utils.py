@@ -1,45 +1,11 @@
+# encoding=utf-8
+
 import torchvision.transforms as t
 from PIL import Image
 from torch.utils.data import Dataset
 import os
-from config import CANDIDATE_ROOT
-
-
-class MyDataset(Dataset):
-    def __init__(self, f_names, ls, transform=None, target_transform=None):
-        self.filenames = f_names
-        self.transform = transform
-        self.target_transform = target_transform
-        self.labels = ls
-        self.loader = self.image_loader
-
-    def __getitem__(self, item):
-        fn = self.filenames[item]
-        label = self.labels[item]
-        img = self.loader(fn)
-        if self.transform is not None:
-            img = self.transform(img)
-        return img, label
-
-    def __len__(self):
-        return len(self.filenames)
-
-    @staticmethod
-    def image_loader(path):
-        image = Image.open(path)
-        image = image.convert("RGB")
-        return image
-
-
-def image_transform(image):
-    transforms = t.Compose(
-        [
-            t.Resize((224, 224)),
-            t.ToTensor()
-        ]
-    )
-    image_tensor = transforms(image)
-    return image_tensor
+from config import CANDIDATE_ROOT, CATEGORY_MAPPING
+from tqdm import tqdm
 
 
 def get_sample_num(path):
@@ -58,6 +24,14 @@ def get_bad_samples(path):
         for image in os.listdir(os.path.join(path, category)):
             if image[-7:-4] == 'gif':
                 print(os.path.join(os.path.join(path, category, image)))
+
+
+def read_filenames_and_labels_to_txt(images_dir, target_txt):
+    for category_dir in os.listdir(images_dir):
+        for image_dir in tqdm(os.listdir(os.path.join(images_dir, category_dir))):
+            with open(target_txt, "w", encoding="utf-8") as f:
+                f.write("{},{}".format(image_dir[:-4], CATEGORY_MAPPING[category_dir]))
+
 
 
 # def get_not_rgb_samples(path):
