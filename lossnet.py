@@ -41,3 +41,14 @@ class LossNet(nn.Module):
 
         out = self.linear(torch.cat((out1, out2, out3, out4), 1))
         return out
+
+
+class MetaLossNet(nn.Module):
+    def __init__(self):
+
+
+    def forward(self):
+
+
+if __name__ == "__main__":
+
