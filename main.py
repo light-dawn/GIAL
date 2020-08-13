@@ -2,18 +2,17 @@
 
 import random
 # import visdom
-import torch
 from torch import nn, optim
 import torch.optim.lr_scheduler as lr_scheduler
 from torch.utils.data import DataLoader, SequentialSampler
-from resnet import ResNet18
-from lossnet import LossNet
+from network.resnet import ResNet18
+from network.lossnet import LossNet
 from aft import *
 from torch import backends
 from torch import cuda
-from utils import *
+from utils.utils import *
 from dataset import *
-from augmentation import create_patches
+from utils.augmentation import create_patches
 from active import active_sampling
 
 iters = 0

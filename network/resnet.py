@@ -210,3 +210,12 @@ def _resnet(block, layers, **kwargs):
 
 def ResNet18(**kwargs):
     return _resnet(BasicBlock, [2, 2, 2, 2], **kwargs)
+
+
+if __name__ == "__main__":
+    resnet = ResNet18(num_classes=23)
+    test_tensor = torch.zeros(size=(12, 3, 224, 224))
+    out, feature_list = resnet(test_tensor)
+    print(out.size())
+    for feature_map in feature_list:
+        print(feature_map.size())

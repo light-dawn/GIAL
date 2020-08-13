@@ -33,11 +33,9 @@ def read_filenames_and_labels_to_txt(images_dir, target_txt):
                 f.write("{},{}".format(image_dir[:-4], CATEGORY_MAPPING[category_dir]))
 
 
-
 # def get_not_rgb_samples(path):
 #     for category in os.listdir(path):
 #         for image in os.listdir(os.path.join(path, category)):
-
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@
 
 import torch.nn.functional as F
 import numpy as np
-from utils import *
+from utils.utils import *
 from tqdm import tqdm
 import torch
 from dataset import image_transform

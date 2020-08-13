@@ -118,4 +118,8 @@ def active_sampling(strategy, indices, model):
         arg_u = np.argsort(uncertainty)
         selected_indices = list(np.array(indices)[arg_u[-K:]])
 
+    else:
+        print("The strategy is not supported. ")
+        selected_indices = None
+
     return selected_indices
